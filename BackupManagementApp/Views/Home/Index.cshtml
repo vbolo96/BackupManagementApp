@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Backup Management </h1>
+    <p class="lead">Dump Applic is a great application for managing and journaling backup in enterprise environment.</p>
+    <p><a href="@Url.Action("About", "Home")" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Tapes</h2>
+        <p>
+            Add your backup tapes with the required information or edit them when they will be replaced.
+        </p>
+        <p><a class="btn btn-default" href="@Url.Action("Index", "Tapes")">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Backup Settings</h2>
+        <p>Go to this page in order to set the days for daily and weekly backup.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Index", "BackupDaysSettings")">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>History</h2>
+        <p>Check the backup history to see if some day was missed.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Index", "History")">Learn more &raquo;</a></p>
+    </div>
+</div>

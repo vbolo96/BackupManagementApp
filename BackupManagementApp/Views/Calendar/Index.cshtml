@@ -1,0 +1,304 @@
+﻿@model BackupManagementApp.ViewModels.CalendarViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+            @{
+                int currentMonth = DateTime.Now.Month;
+                int currentDay = DateTime.Now.Day;
+                int currentYear = DateTime.Now.Year;
+
+                if (ViewBag.Year != null && ViewBag.Month != null)
+                {
+                    currentMonth = ViewBag.Month;
+                    currentYear = ViewBag.Year;
+                    currentDay = 1;
+                    var weeks = ViewBag.weeks;
+                }
+
+                DateTime selectedDate = new DateTime(currentYear, currentMonth, currentDay);
+                int numberOfDaysInCurrentMonth = System.DateTime.DaysInMonth(currentYear, currentMonth);
+                string currentMonthString = selectedDate.ToString("MMMM");
+
+                <h1 style="color:mediumslateblue" class="row justify-content-center align-items-center">Calendar @currentMonthString @currentYear</h1>
+                <br>
+
+
+                <center>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="btn-sm btn-primary">
+                                    @Html.ActionLink("<<", "Index", new { year = currentYear, month = currentMonth - 1 }, new { @style = "color:#ffffff;font-weight:bold;" })
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-sm btn-primary">
+                                    @Html.ActionLink(">>", "Index", new { year = currentYear, month = currentMonth + 1 }, new { @style = "color:#ffffff;font-weight:bold;" })
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+
+                <br />
+
+                <table class="table-bordered" style="width:100%; border-color:#000000; border:1px;">
+                    <tr>
+                        <th style="background-color:#B1BFD3; text-align:center;">Sunday</th>
+                        <th style="background-color:#B1BFD3; text-align:center;">Monday</th>
+                        <th style="background-color:#B1BFD3; text-align:center;">Tuesday</th>
+                        <th style="background-color:#B1BFD3; text-align:center;">Wednesday</th>
+                        <th style="background-color:#B1BFD3; text-align:center;">Thursday</th>
+                        <th style="background-color:#B1BFD3; text-align:center;">Friday</th>
+                        <th style="background-color:#B1BFD3; text-align:center;">Saturday</th>
+                    </tr>
+                    @for (int i = 1; i <= numberOfDaysInCurrentMonth; i++)
+                    {
+                        // find out what day of the week
+                        string dayOfTheWeek = (new DateTime(currentYear, currentMonth, i)).ToString("ddd");
+                        int dayOfTheWeekValue = (int)(new DateTime(currentYear, currentMonth, i)).DayOfWeek;
+
+                        if (dayOfTheWeek != "Sun" && i == 1)
+                        {
+                            @:<tr>
+                                // Output empty cells if beginning of the
+                            // month falls on a day other than Monday
+                            for (int j = 1; j <= dayOfTheWeekValue; j++)
+                            {
+                                    @:<td>&nbsp;</td>
+                            }
+                        }
+
+                        if (dayOfTheWeek == "Sun")//if day of the week is again monday we start a new row
+                        {
+                             @:<tr>
+                        }
+
+                                if (Model.Weeks[0] == new DateTime(currentYear, currentMonth, i))
+                                {
+                                <td style="background-color: #9033FF; padding: 10px; min-height: 120px; min-width: 120px; vertical-align: top;"><span style="font-size:x-large"><b>@i</b><br /></span></td>
+                                }
+                                else
+                                if (Model.Weeks.Contains(new DateTime(currentYear, currentMonth, i)) && Model.Weeks[0] != new DateTime(currentYear, currentMonth, i))
+                                {
+                                <td style="background-color: #50E12C; padding: 10px; min-height: 120px; min-width: 120px; vertical-align: top;"><span style="font-size:x-large"><b>@i</b><br /></span></td>
+                                }
+                                else
+                                {
+                                <td style="background-color:#E9F0F9;padding:10px;min-height:120px;min-width:120px;vertical-align:top;"><span style="font-size:x-large"><b>@i</b><br /></span></td>
+                                }
+                                if (dayOfTheWeek == "Sat" && i == numberOfDaysInCurrentMonth)//if we reached end of the current month on Saturday, we end the current row
+                                {
+                                   @: </tr> 
+                                }  
+
+
+                    if (i == numberOfDaysInCurrentMonth)
+                    {
+                        // Output empty cells if the end of the
+                        // month falls on a day other then Sunday
+                        for (int k = dayOfTheWeekValue; k < 6; k++)
+                        {
+                                @: <td>&nbsp;</td>
+                            }
+                            @:</tr>
+
+                        }
+                    }
+                </table>
+            }
+
+        </div>
+    </div>
+</div>
+<br>
+<br>
+
+<style>
+        #fontSizeWrapper {
+            font-size: 16px;
+        }
+
+        #fontSize {
+            width: 100px;
+            font-size: 1em;
+        }
+
+        /* ————————————————————–
+      Tree core styles
+    */
+        .tree {
+            margin: 1em;
+        }
+
+            .tree input {
+                position: absolute;
+                clip: rect(0, 0, 0, 0);
+            }
+
+                .tree input ~ ul {
+                    display: none;
+                }
+
+                .tree input:checked ~ ul {
+                    display: block;
+                }
+
+            /* ————————————————————–
+      Tree rows
+    */
+            .tree li {
+                line-height: 1.2;
+                position: relative;
+                padding: 0 0 1em 1em;
+            }
+
+            .tree ul li {
+                padding: 1em 0 0 1em;
+            }
+
+            .tree > li:last-child {
+                padding-bottom: 0;
+            }
+
+        /* ————————————————————–
+      Tree labels
+    */
+        .tree_label {
+            position: relative;
+            display: inline-block;
+            background: #fff;
+        }
+
+        label.tree_label {
+            cursor: pointer;
+        }
+
+            label.tree_label:hover {
+                color: #666;
+            }
+
+            /* ————————————————————–
+      Tree expanded icon
+    */
+            label.tree_label:before {
+                background: #000;
+                color: #fff;
+                position: relative;
+                z-index: 1;
+                float: left;
+                margin: 0 1em 0 -2em;
+                width: 1em;
+                height: 1em;
+                border-radius: 1em;
+                content: '+';
+                text-align: center;
+                line-height: .9em;
+            }
+
+        :checked ~ label.tree_label:before {
+            content: '–';
+        }
+
+        /* ————————————————————–
+      Tree branches
+    */
+        .tree li:before {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -.5em;
+            display: block;
+            width: 0;
+            border-left: 1px solid #777;
+            content: "";
+        }
+
+        .tree_label:after {
+            position: absolute;
+            top: 0;
+            left: -1.5em;
+            display: block;
+            height: 0.5em;
+            width: 1em;
+            border-bottom: 1px solid #777;
+            border-left: 1px solid #777;
+            border-radius: 0 0 0 .3em;
+            content: '';
+        }
+
+        label.tree_label:after {
+            border-bottom: 0;
+        }
+
+        :checked ~ label.tree_label:after {
+            border-radius: 0 .3em 0 0;
+            border-top: 1px solid #777;
+            border-right: 1px solid #777;
+            border-bottom: 0;
+            border-left: 0;
+            bottom: 0;
+            top: 0.5em;
+            height: auto;
+        }
+
+        .tree li:last-child:before {
+            height: 1em;
+            bottom: auto;
+        }
+
+        .tree > li:last-child:before {
+            display: none;
+        }
+
+        .tree_custom {
+            display: block;
+            background: #eee;
+            padding: 1em;
+            border-radius: 0.3em;
+        }
+</style>
+<div class="container">
+    <div class="col-md-12">
+        <ul class="tree">
+            <li style="font-size:xx-large">
+                <input type="checkbox" checked="checked" id="c1" />
+                <label class="tree_label" for="c1" style="color: #9033FF">Monthly Backup Date</label>
+                <ul>
+                    <li style="font-size:x-large">
+                        <span class="tree_label" style="color: #9033FF">@Model.Weeks[0].AddMonths(-1).ToString("MMMM") Backup: @Model.Weeks[0].ToLongDateString()</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="tree">
+            <li style="font-size: xx-large">
+                <input type="checkbox" checked="checked" id="c2" />
+                <label class="tree_label" for="c2" style="color: #50E12C">Weekly Backup Dates</label>
+                <ul>
+
+                    @for (int i = 1; i < Model.Weeks.Count; i++)
+                    {
+                        <li style="font-size: x-large">
+                            <span class="tree_label" style="color: #50E12C">Week @i Backup: @Model.Weeks[i].ToLongDateString()</span>
+                        </li>
+                    }
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/calendar")
+}

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<BackupManagementApp.Models.Tape>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="color:mediumslateblue" class="row justify-content-center align-items-center">Tapes</h2>
+<br>
+
+@if (!Model.Any())
+{
+    <p>There are NO tapes yet.</p>
+}
+else
+{
+    <table id="tapes" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Tape</th>
+                <th>Backup System</th>
+                <th>Backup Type</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tape in Model)
+            {
+                <tr>
+                    <td>@tape.BarCode</td>
+                    <td>@tape.BackupSystem.Name</td>
+                    <td>@tape.BackupTypes.Name</td>
+                    <td>@tape.Details</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#tapes").DataTable();
+        });
+    </script>
+}

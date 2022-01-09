@@ -1,0 +1,50 @@
+﻿@model BackupManagementApp.ViewModels.BackupDaysSettingsViewModel
+@{
+    ViewBag.Title = "Backup Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="color:mediumslateblue" class="row justify-content-center align-items-center h-100">Backup Settings</h2>
+<br>
+
+@using (Html.BeginForm("Save", "BackupDaysSettings"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <h3 style="color:slategrey">Daily Backup Days</h3>
+            <br>
+            @for (int i = 0; i < Model.Days.Count(); i++)
+            {
+            <div class="form-group">
+                <div class="checkbox">
+                    <label class="text-xl-center">
+                        @Html.CheckBoxFor(m => m.Days[i].IsDailyTape) @Model.Days[i].Name
+                    </label>
+                </div>
+            </div>
+            }
+            @Html.ValidationMessageFor(m => m.Days)
+            <br>
+            <h3 style="color:slategrey">Weekly Backup Day</h3>
+            <div class="form-group">
+                @Html.DropDownListFor((m => m.Day.Id), new SelectList(Model.Days, "Id", "Name"), "Select weekly backup day", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Day.Id, "", new { @class = "text-danger" })
+                @Html.HiddenFor(m => m.Day.Name)
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </div>
+            
+            </div>
+        </div>
+}
+            @section scripts
+{
+                @Scripts.Render("~/bundles/jqueryval")
+            }
+

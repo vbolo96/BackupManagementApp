@@ -1,0 +1,54 @@
+﻿@model BackupManagementApp.ViewModels.DailyTapesViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="color:mediumslateblue" class="row justify-content-center align-items-center">Daily Tapes</h2>
+<br>
+
+@if (Model.Tapes.Count == 0)
+{
+    <h2>No backup to be done today</h2>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>Tape</th>
+            <th>Backup System</th>
+            <th>Backup Type</th>
+            <th>Day</th>
+            @if (Model.Tapes[0].WeekId != null)
+            {
+                <th>Week</th>
+}
+            @if (Model.Tapes[0].MonthId != null)
+            {
+                <th>Month</th>
+}
+            <th>Details</th>
+
+        </tr>
+        @foreach (var item in Model.Tapes)
+        {
+            <tr>
+                <td>@item.BarCode</td>
+                <td>@item.BackupSystem.Name</td>
+                <td>@item.BackupTypes.Name</td>
+                <td>@item.Day.Name</td>
+                @if (item.WeekId != null)
+                {
+                    <td>@item.Week.Name</td>
+                }
+                @if (item.MonthId != null)
+                {
+                    <td>@item.Month.Name</td>
+                }
+                <td> @item.Details</td>
+            </tr>
+        }
+
+    </table>
+}

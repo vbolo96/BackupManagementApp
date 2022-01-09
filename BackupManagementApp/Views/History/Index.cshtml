@@ -1,0 +1,91 @@
+﻿@model IEnumerable<BackupManagementApp.Models.History>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="color:mediumslateblue" class="row justify-content-center align-items-center">Backup History</h2><br>
+  
+<table id="history" class="table table-bordered table-responsive">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BarCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BackupSystem)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BackupTypes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Day)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Week)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Month)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Details)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CheckedDate)
+        </th>
+
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.BarCode)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.BackupSystem.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.BackupTypes.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Day.Name)
+    </td>
+    <td>
+        @if (item.WeekId == null)
+        {
+            @Html.DisplayFor(modelItem => item.WeekId)
+        }
+        else
+        {
+            @Html.DisplayFor(modelItem => item.Week.Name)
+        }
+    </td>
+    <td>
+        @if (item.MonthId == null)
+        {
+            @Html.DisplayFor(modelItem => item.MonthId)
+        }
+        else
+        {
+            @Html.DisplayFor(modelItem => item.Month.Name)
+        }
+        </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Details)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CheckedDate)
+    </td>
+
+</tr>
+}
+
+</table>
+ @section scripts 
+{
+     <script>
+         $(document).ready(function () {
+             $("#history").DataTable();
+         });
+     </script>
+}

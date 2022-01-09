@@ -1,0 +1,88 @@
+﻿@model BackupManagementApp.ViewModels.TapeFormViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Title</h2>
+
+@using (Html.BeginForm("Save", "Tapes"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "Please fix the errors!", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.BarCode)
+            <div>
+                @Html.EditorFor(m => m.BarCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.BarCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.BackupSystemId)
+            <div>
+                @Html.DropDownListFor(m => m.BackupSystemId, new SelectList(Model.BackupSystems, "Id", "Name"), "Select Backup System", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.BackupSystemId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.BackupTypesId)
+            <div>
+                @Html.DropDownListFor(m => m.BackupTypesId, new SelectList(Model.BackupTypes, "Id", "Name"), "Select Backup Type", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.BackupTypesId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.DayId)
+            <div>
+                @Html.DropDownListFor(m => m.DayId, new SelectList(Model.Days, "Id", "Name"), "Select backup day", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DayId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.WeekId)
+            <div>
+                @Html.DropDownListFor(m => m.WeekId, new SelectList(Model.Weeks, "Id", "Name"), "Select backup week", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.WeekId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MonthId)
+            <div>
+                @Html.DropDownListFor(m => m.MonthId, new SelectList(Model.Months, "Id", "Name"), "Select backup month", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.MonthId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Details)
+            <div>
+                @Html.EditorFor(m => m.Details, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Details, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            <div>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

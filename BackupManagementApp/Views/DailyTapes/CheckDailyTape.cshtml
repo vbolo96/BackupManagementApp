@@ -1,0 +1,66 @@
+﻿@model BackupManagementApp.ViewModels.DailyTapesViewModel
+@{
+    ViewBag.Title = "CheckDailyTapes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Check Daily Tape</h2>
+
+@using (Html.BeginForm("CheckTape", "DailyTapes"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            @Html.LabelFor(m => m.BarCode)
+            @Html.TextBoxFor(m => m.BarCode, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BackupSystemId)
+            @Html.TextBoxFor(m => m.BackupSystemId, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BackupTypesId)
+            @Html.TextBoxFor(m => m.BackupTypesId, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.DayId)
+            @Html.TextBoxFor(m => m.DayId, new { @class = "form-control", @readonly = "true" })
+        </div>
+        @if (Model.WeekId != null)
+        {
+            <div class="form-group">
+
+                @Html.LabelFor(m => m.WeekId)
+                @Html.TextBoxFor(m => m.WeekId, new { @class = "form-control", @readonly = "true" })
+
+            </div>}
+        @if (Model.MonthId != null)
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.MonthId)
+                @Html.TextBoxFor(m => m.MonthId, new { @class = "form-control", @readonly = "true" })
+
+            </div>}
+        <div class="form-group">
+            @Html.LabelFor(m => m.Details)
+            @Html.TextBoxFor(m => m.Details, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CheckingDate)
+            @Html.TextBoxFor(m => m.CheckingDate, new { @class = "form-control", @readonly = "true" })
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="submit" value="Check Tape" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

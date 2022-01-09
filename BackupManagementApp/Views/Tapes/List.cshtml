@@ -1,0 +1,85 @@
+﻿@model IEnumerable<BackupManagementApp.Models.Tape>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="color:mediumslateblue" class="row justify-content-center align-items-center">Tapes</h2>
+<br>
+@Html.ActionLink("New Tape", "New", "Tapes", null, new { @class = "btn btn-primary" })
+<br>
+<br>
+@if (!Model.Any())
+{
+    <p>There are NO tapes yet.</p>
+}
+else
+{
+    <table id="tapes" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Tape</th>
+                <th>Backup System</th>
+                <th>Backup Type</th>
+                <th>Details</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tape in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(tape.BarCode, "Edit", "Tapes", new { id = tape.Id }, null)</td>
+                    <td>@tape.BackupSystem.Name</td>
+                    <td>@tape.BackupTypes.Name</td>
+                    <td>@tape.Details</td>
+                    <td><button data-tape-id="@tape.Id" type="submit" class="btn btn-primary js-delete">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $("#tapes").DataTable();
+
+            // delete action using mvc action
+            //$("#tapes").on("click", ".js-delete", function () {
+            //    var button = $(this);
+            //    if (confirm("Are you sure you want to delete this tape?")) {
+            //        $.ajax({
+            //            url: "/Tapes/Delete",
+            //            data: { Id: button.attr("data-tape-id") },
+            //            type: "POST",
+            //            success: function () {
+            //                table.row(button.parents("tr")).remove().draw()
+            //            }
+            //        });
+            //    }
+            //});
+
+
+            //delete action using api delete
+            $("#tapes").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure you want to delete this tape?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/tapes/" + button.attr("data-tape-id"),
+                            method: "DELETE",
+                            success:
+                                function () {
+                                    table.row(button.parents("tr")).remove().draw();
+
+                                }
+                        });
+                    }
+                })
+            });
+
+
+        });
+    </script>
+}
